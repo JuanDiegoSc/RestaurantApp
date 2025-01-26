@@ -191,14 +191,14 @@ namespace Restaurant.Services.OrderAPI.Controllers
                     orderHeader.PaymentIntentId = paymentIntent.Id;
                     orderHeader.Status = SD.Status_Approved;
                     _db.SaveChanges();
-                    /*RewardsDto rewardsDto = new()
+                    RewardsDto rewardsDto = new()
                     {
                         OrderId = orderHeader.OrderHeaderId,
                         RewardsActivity = Convert.ToInt32(orderHeader.OrderTotal),
                         UserId = orderHeader.UserId
-                    };*/
-                    //string topicName = _configuration.GetValue<string>("TopicAndQueueNames:OrderCreatedTopic");
-                    //await _messageBus.PublishMessage(rewardsDto, topicName);
+                    };
+                    string topicName = _configuration.GetValue<string>("TopicAndQueuesNames:OrderCreatedTopic");
+                    await _messageBus.PublishMessage(rewardsDto, topicName);
                     _response.Result = _mapper.Map<OrderHeaderDto>(orderHeader);
                 }
 
@@ -211,5 +211,39 @@ namespace Restaurant.Services.OrderAPI.Controllers
             return _response;
         }
 
+
+        [Authorize]
+        [HttpPost("UpdateOrderStatus/{orderId:int}")]
+        public async Task<ResponseDto> UpdateOrderStatus(int orderId, [FromBody] string newStatus)
+        {
+            try
+            {
+                OrderHeader orderHeader = _db.OrderHeaders.First(u => u.OrderHeaderId == orderId);
+                if(orderHeader != null)
+                {
+                
+                   if(newStatus == SD.Status_Cancelled)
+                    {
+                        var options = new RefundCreateOptions
+                        {
+                            Reason = RefundReasons.RequestedByCustomer,
+                            PaymentIntent = orderHeader.PaymentIntentId,
+
+                        };
+                        var service = new RefundService();
+                        Refund refund = service.Create(options);
+                        orderHeader.Status = newStatus;
+                    }
+                    orderHeader.Status = newStatus;
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess=false;
+
+            }
+            return _response;
+        }
     }
 }

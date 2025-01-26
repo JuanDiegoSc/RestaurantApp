@@ -17,7 +17,8 @@ namespace Restaurant.Web.Service
             {
                 ApiType = SD.ApiType.POST,
                 Data = productDto,
-                Url = SD.ProductAPIBase + "/api/product/"
+                Url = SD.ProductAPIBase + "/api/product",
+                ContentType = SD.ContentType.MultipartFormData
             });
         }
 
@@ -39,15 +40,6 @@ namespace Restaurant.Web.Service
             });
         }
 
-        public async Task<ResponseDto?> GetProductAsync(string productName)
-        {
-            return await _baseService.SendAsync(new RequestDto()
-            {
-                ApiType = SD.ApiType.GET,
-                Url = SD.ProductAPIBase + "/api/product/GetByCode" + productName
-            });
-        }
-
         public async Task<ResponseDto?> GetProductByIdAsync(int id)
         {
             return await _baseService.SendAsync(new RequestDto()
@@ -63,7 +55,8 @@ namespace Restaurant.Web.Service
             {
                 ApiType = SD.ApiType.PUT,
                 Data = productDto,
-                Url = SD.ProductAPIBase + "/api/product/"
+                Url = SD.ProductAPIBase + "/api/product",
+                ContentType = SD.ContentType.MultipartFormData
             });
         }
     }

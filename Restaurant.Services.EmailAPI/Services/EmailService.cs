@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Services.EmailAPI.Data;
+using Restaurant.Services.EmailAPI.Message;
 using Restaurant.Services.EmailAPI.Models;
 using Restaurant.Services.EmailAPI.Models.Dto;
 using System.Text;
@@ -35,10 +36,16 @@ namespace Restaurant.Services.EmailAPI.Services
             await LogAndEmail(message.ToString(), cartDto.CartHeader.Email);
         }
 
+        public async Task LogOrderPlaced(RewardMessage rewardMessage)
+        {
+            string message = "New Order Placed. <br/> Order Id : " + rewardMessage.OrderId;
+            await LogAndEmail(message, "restaurant@gmail.com");
+        }
+
         public async Task RegisterUserEmailAndLog(string email)
         {
             string message = "User Registeration Successful. <br/> Email : " + email;
-            await LogAndEmail(message, "dotnetmastery@gmail.com");
+            await LogAndEmail(message, "restaurant@gmail.com");
         }
 
         private async Task<bool> LogAndEmail(string message, string email)

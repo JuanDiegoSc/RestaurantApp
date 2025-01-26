@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Restaurant.Web.Models;
 using Restaurant.Web.Service.IService;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 
 namespace Restaurant.Web.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class CouponController : Controller
     {
         private readonly ICouponService _couponService;

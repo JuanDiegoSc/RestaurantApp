@@ -17,7 +17,7 @@ namespace Restaurant.Web.Service
             {
                 ApiType = SD.ApiType.POST,
                 Data = couponDto,
-                Url = SD.CouponAPIBase + "/api/coupon/"
+                Url = SD.CouponAPIBase + "/api/coupon"
             });
         }
 
@@ -44,7 +44,7 @@ namespace Restaurant.Web.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase + "/api/coupon/GetByCode" + couponCode
+                Url = SD.CouponAPIBase + "/api/coupon/GetByCode/" + couponCode
             });
         }
 
@@ -63,7 +63,7 @@ namespace Restaurant.Web.Service
             {
                 ApiType = SD.ApiType.PUT,
                 Data = couponDto,
-                Url = SD.CouponAPIBase + "/api/coupon/"
+                Url = SD.CouponAPIBase + "/api/coupon"
             });
         }
     }
