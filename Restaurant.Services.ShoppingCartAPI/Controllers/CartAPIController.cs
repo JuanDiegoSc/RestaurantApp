@@ -166,21 +166,25 @@ namespace Restaurant.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
-        [HttpDelete("RemoveCart")]
-        public async Task<ResponseDto> RemoveCart([FromBody]int cartDetailsId)
+        [HttpPost("RemoveCart")]
+        public async Task<ResponseDto> RemoveCart([FromBody] int cartDetailsId)
         {
             try
             {
-                CartDetails cartDetails = _db.CartDetails.First(u => u.CartDetailsId == cartDetailsId);
-                
-                int totalCountOfCartItem = _db.CartDetails.Where(u => u.CartHeaderId == cartDetails.CartHeaderId).Count();
+                CartDetails cartDetails = _db.CartDetails
+                   .First(u => u.CartDetailsId == cartDetailsId);
+
+                int totalCountofCartItem = _db.CartDetails.Where(u => u.CartHeaderId == cartDetails.CartHeaderId).Count();
                 _db.CartDetails.Remove(cartDetails);
-                if (totalCountOfCartItem == 1)
+                if (totalCountofCartItem == 1)
                 {
-                   var cartHeaderToRemove = await _db.CartHeaders.FirstOrDefaultAsync(u => u.CartHeaderId == cartDetails.CartHeaderId);
+                    var cartHeaderToRemove = await _db.CartHeaders
+                       .FirstOrDefaultAsync(u => u.CartHeaderId == cartDetails.CartHeaderId);
+
                     _db.CartHeaders.Remove(cartHeaderToRemove);
                 }
                 await _db.SaveChangesAsync();
+
                 _response.Result = true;
             }
             catch (Exception ex)
