@@ -1,0 +1,48 @@
+﻿@using Restaurant.Web.Models.EmployeeModels
+@model List<AdminEmpleadoViewModel>
+
+<div class="container mt-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Panel de Administración</h1>
+        <p class="lead">Gestiona empleados, horarios, solicitudes de vacaciones y reportes.</p>
+        <hr class="my-4">
+    </div>
+
+    <!-- Botón para crear nuevo empleado -->
+    <div class="text-center mb-4">
+        <a href="@Url.Action("CrearEmpleado", "Admin")" class="btn btn-primary btn-lg">Crear Nuevo Empleado</a>
+    </div>
+
+    <!-- Lista de empleados -->
+    <h2 class="mb-4">Lista de Empleados</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var empleado in Model)
+            {
+                <tr>
+                    <td>@empleado.Id</td>
+                    <td>@empleado.Nombre</td>
+                    <td>@empleado.Usuario</td>
+                    <td>
+                        <a href="@Url.Action("BuscarEmpleado", "Admin", new { id = empleado.Id })" class="btn btn-info btn-sm">Ver Detalle</a>
+                        <a href="@Url.Action("ReporteComparativo", "Admin", new { empleadoId = empleado.Id })" class="btn btn-secondary btn-sm">Reporte</a>
+                        <a href="@Url.Action("SolicitudesVacaciones", "Admin", new { empleadoId = empleado.Id })" class="btn btn-warning btn-sm">Solicitudes</a>
+                        <a href="@Url.Action("CrearHorario", "Admin", new { empleadoId = empleado.Id })" class="btn btn-success btn-sm">Asignar Horario</a>
+                        <form method="post" action="@Url.Action("EliminarEmpleado", "Admin")" style="display: inline;">
+                            <input type="hidden" name="id" value="@empleado.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este empleado?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

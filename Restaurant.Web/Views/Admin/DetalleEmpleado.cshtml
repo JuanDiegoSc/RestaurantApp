@@ -1,0 +1,91 @@
+﻿@using Restaurant.Web.Models.EmployeeModels
+@model AdminEmpleadoViewModel
+
+<div class="container mt-4">
+    <h1 class="display-4">Detalles del Empleado</h1>
+    <p class="lead">Consulta la información del empleado y sus registros asociados.</p>
+    <hr class="my-4">
+
+    <!-- Información del Empleado -->
+    <section class="mb-4">
+        <h2>Información Personal</h2>
+        <table class="table table-bordered">
+            <tr>
+                <th>Nombre</th>
+                <td>@Model.Nombre</td>
+            </tr>
+            <tr>
+                <th>Usuario</th>
+                <td>@Model.Usuario</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Horarios -->
+    <section class="mb-4">
+        <h2>Horarios Asignados</h2>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Día de la Semana</th>
+                    <th>Horas</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var horario in Model.Horarios)
+                {
+                    <tr>
+                        <td>@horario.Id</td>
+                        <td>@horario.DiaSemana</td>
+                        <td>@horario.Horas</td>
+                        <td>@horario.FechaInicio.ToString("yyyy-MM-dd")</td>
+                        <td>@horario.FechaFin.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Solicitudes de Vacaciones -->
+    <section class="mb-4">
+        <h2>Solicitudes de Vacaciones</h2>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var solicitud in Model.SolicitudesVacaciones)
+                {
+                    <tr>
+                        <td>@solicitud.FechaInicio.ToString("yyyy-MM-dd")</td>
+                        <td>@solicitud.FechaFin.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @if (solicitud.Estado == "Aprobado")
+                            {
+                                <span class="badge bg-success">@solicitud.Estado</span>
+                            }
+                            else if (solicitud.Estado == "Pendiente")
+                            {
+                                <span class="badge bg-warning text-dark">@solicitud.Estado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@solicitud.Estado</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Botón para regresar -->
+    <a href="@Url.Action("Index", "Admin")" class="btn btn-primary">Volver</a>
+</div>

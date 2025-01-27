@@ -1,0 +1,26 @@
+﻿@using Restaurant.Web.Models.EmployeeModels
+@model AdminEmpleadoViewModel
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Crear Nuevo Empleado</h1>
+        <p class="lead">Llena los datos del nuevo empleado.</p>
+        <hr class="my-4">
+    </div>
+
+    <form method="post" action="@Url.Action("CrearEmpleado", "Admin")" class="card p-4">
+        <div class="mb-3">
+            <label for="Nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="Nombre" name="Nombre" required />
+        </div>
+        <div class="mb-3">
+            <label for="Usuario" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="Usuario" name="Usuario" required />
+        </div>
+        <div class="mb-3">
+            <label for="Contraseña" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="Contraseña" name="Contraseña" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+    </form>
+</div>

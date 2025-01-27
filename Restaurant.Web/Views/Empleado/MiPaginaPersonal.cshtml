@@ -1,0 +1,108 @@
+﻿@using Restaurant.Web.Models.EmployeeModels
+@model EmpleadoPersonalViewModel
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Bienvenido, @Model.Nombre</h1>
+        <p class="lead">Tu panel personal para gestionar horarios y vacaciones.</p>
+        <hr class="my-4">
+    </div>
+
+    <!-- Horario -->
+    <section class="mb-5">
+        <h2 class="mb-3">Tu Horario</h2>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Día</th>
+                    <th>Horas</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var horario in Model.Horarios)
+                {
+                    <tr>
+                        <td>@horario.DiaSemana</td>
+                        <td>@horario.Horas</td>
+                        <td>@horario.FechaInicio.ToString("yyyy-MM-dd")</td>
+                        <td>@horario.FechaFin.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Formulario de Horario -->
+    <section class="mb-5">
+        <h2 class="mb-3">Llenar Formulario de Horario</h2>
+        <form method="post" action="@Url.Action("LlenarFormulario", "Empleado")" class="card p-4">
+            <input type="hidden" name="EmpleadoId" value="@Model.Id" />
+            <div class="mb-3">
+                <label for="Fecha" class="form-label">Fecha</label>
+                <input type="date" name="Fecha" class="form-control" required />
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="Llenado" value="true" id="Llenado">
+                <label class="form-check-label" for="Llenado">¿Llenaste el formulario?</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Enviar</button>
+        </form>
+    </section>
+
+    <!-- Solicitar Vacaciones -->
+    <section class="mb-5">
+        <h2 class="mb-3">Solicitar Vacaciones</h2>
+        <form method="post" asp-controller="Empleado" asp-action="SolicitarVacaciones" class="card p-4">
+            <input type="hidden" name="EmpleadoId" value="@Model.Id" />
+            <input type="hidden" name="FechaSolicitud" value="@DateTime.Now" />
+            <div class="mb-3">
+                <label for="FechaInicio" class="form-label">Inicio</label>
+                <input type="date" name="FechaInicio" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="FechaFin" class="form-label">Fin</label>
+                <input type="date" name="FechaFin" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-success w-100">Solicitar</button>
+        </form>
+    </section>
+
+    <!-- Solicitudes de Vacaciones -->
+    <section>
+        <h2 class="mb-3">Tus Solicitudes de Vacaciones</h2>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var solicitud in Model.SolicitudesVacaciones)
+                {
+                    <tr>
+                        <td>@solicitud.FechaInicio.ToString("yyyy-MM-dd")</td>
+                        <td>@solicitud.FechaFin.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            @if (solicitud.Estado == "Aprobado")
+                            {
+                                <span class="badge bg-success">@solicitud.Estado</span>
+                            }
+                            else if (solicitud.Estado == "Pendiente")
+                            {
+                                <span class="badge bg-warning text-dark">@solicitud.Estado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@solicitud.Estado</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</div>
